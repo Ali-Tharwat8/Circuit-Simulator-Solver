@@ -22,4 +22,7 @@ public:
     static int getVoltageSourceCount();
 
     std::string getType() const override;
+
+    void displayVoltageSource();
+    void display_VC_I();
 };

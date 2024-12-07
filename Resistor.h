@@ -18,4 +18,7 @@ public:
     std::string getType() const override;
 
     static int getResistorCount();
+    void displayResistor();
+    void display_R_I();
+
 };

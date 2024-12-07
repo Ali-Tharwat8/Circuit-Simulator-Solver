@@ -85,3 +85,13 @@ std::string VoltageSource::getType() const
     return "VoltageSource";
 }
 
+void VoltageSource::displayVoltageSource()
+{
+    std::cout << "V(" << getNode1() << ", " << getNode2() << ", " << getVoltage() << ")\n";
+}
+
+void VoltageSource::display_VC_I()
+{
+    std::cout << "V(" << getNode1() << ", " << getNode2() << ", " << getVoltage() << ")" << "\t I = " << getI() << "\n";
+}
+

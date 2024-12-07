@@ -2,6 +2,7 @@
 
 int Component::componentCount = 0;
 
+
 Component::Component(int n1, int n2)
 {
     if (validateNodes(n1, n2))
@@ -33,3 +34,15 @@ int Component::getComponentCount()
 bool Component::validateNodes(int n1, int n2) {
     return n1 >= 0 && n2 >= 0 && n1 != n2;
 }
+
+void Component::setI(double i)
+{
+    if (abs(i) > .00001)
+        I = i;
+}
+
+double Component::getI()
+{
+    return I;
+}
+

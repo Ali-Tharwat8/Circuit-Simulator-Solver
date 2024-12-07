@@ -1,17 +1,17 @@
 #include "CurrentSource.h"
 
 int CurrentSource::currentsourcecount = 0;
-// Constructor
+
 CurrentSource::CurrentSource(int n1, int n2, double i) : Component(n1, n2), current(i)
 {
     currentsourcecount++;
 }
 
-
 double CurrentSource::getCurrent() const 
 {
     return current;
 }
+
 
 void CurrentSource::setCurrent(double i) 
 {
@@ -52,6 +52,11 @@ int CurrentSource::getcurrentcount()
 CurrentSource::~CurrentSource()
 {
     currentsourcecount++;
+}
+
+void CurrentSource::displayCurrentSource()
+{
+    std::cout << "I(" << getNode1() << ", " << getNode2() << ", " << getCurrent() << ")\n";
 }
 
 std::string CurrentSource::getType() const

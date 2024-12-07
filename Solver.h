@@ -6,6 +6,8 @@
 #include "Resistor.h"
 #include "CurrentSource.h"
 #include "VoltageSource.h"
+#include "Wire.h"
+#include <utility> // For std::pair
 
 
 
@@ -19,11 +21,13 @@ private:
     Eigen::VectorXd I;
     Eigen::VectorXd V;
     std::unordered_set<int> uniqueNodes;
+    bool Ground = 0;
 
     std::vector<Component*> components;
     std::vector<Resistor*> resistors;
     std::vector<VoltageSource*> Voltages;
     std::vector<CurrentSource*> Currents;
+    std::vector<Wire*> Wires;
 
     void updateNodeCount(Component* component);
     bool isValidSystem() const;
@@ -36,16 +40,19 @@ public:
     void addComponent(Component* component);
     void solve();
     double getVoltage(int node) const;
-    //double getCurrent(int componentIndex);
+    void getCurrent();
     int getNumNodes() const;
-    //void clearResistors();// Print the conductance matrix and current vector
-    void printV() const;
+    void printV();
+    void zeroV();
+    //void noGroundSolution();
+    int getMatrixSize();
 
     Eigen::MatrixXd getG();
     Eigen::MatrixXd getI();
 
     void stamp();
-
 };
+
+
 
 #endif

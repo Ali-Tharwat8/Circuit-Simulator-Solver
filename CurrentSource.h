@@ -15,5 +15,6 @@ public:
     void stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) override;
     static int getcurrentcount();
     ~CurrentSource();
+    void displayCurrentSource();
     
 };

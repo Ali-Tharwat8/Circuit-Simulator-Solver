@@ -140,6 +140,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="CurrentSource.h" />
     <ClInclude Include="Resistor.h" />
+    <ClInclude Include="simulateGUIInput.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="VoltageSource.h" />
     <ClInclude Include="Wire.h" />

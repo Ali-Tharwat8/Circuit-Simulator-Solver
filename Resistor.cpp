@@ -71,3 +71,13 @@ int Resistor::getResistorCount()
 {
     return resistorCount;
 }
+
+void Resistor::displayResistor()
+{
+    std::cout << "R(" << this->getNode1() << ", " << getNode2() << ", " << getResistance() << ")\n";
+}
+
+void Resistor::display_R_I()
+{
+    std::cout << "R(" << getNode1() << ", " << getNode2() << ", " << getResistance() << ")" << "\t I = " << getI() << "\n";
+}

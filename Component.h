@@ -10,8 +10,12 @@ class Component {
 protected:
     int node1, node2;      
     static int componentCount;
+    double I;
 
 public:
+
+    void setI(double i = 0);
+    double getI();
     Component(int n1 = -1, int n2 = -1);
     virtual ~Component();
     int getNode1() const;
