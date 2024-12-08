@@ -8,11 +8,11 @@ Resistor::Resistor(int n1, int n2, double r) : Component(n1, n2), resistance(1)
     ++resistorCount;
 }
 
-Resistor::~Resistor() 
+void Resistor::setResistance(double r)
 {
-    if (resistorCount > 0) 
+    if (r > 0.0)
     {
-        --resistorCount;
+        resistance = r;
     }
 }
 
@@ -21,12 +21,14 @@ double Resistor::getResistance() const
     return resistance;
 }
 
-void Resistor::setResistance(double r) 
+int Resistor::getResistorCount()
 {
-    if (r > 0.0) 
-    {
-        resistance = r;
-    }
+    return resistorCount;
+}
+
+string Resistor::getType() const
+{
+    return "Resistor";
 }
 
 void Resistor::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) 
@@ -62,22 +64,21 @@ void Resistor::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I)
     }
 }
 
-std::string Resistor::getType() const 
-{
-    return "Resistor";
-}
-
-int Resistor::getResistorCount() 
-{
-    return resistorCount;
-}
-
 void Resistor::displayResistor()
 {
-    std::cout << "R(" << this->getNode1() << ", " << getNode2() << ", " << getResistance() << ")\n";
+    cout << "R(" << this->getNode1() << ", " << getNode2() << ", " << getResistance() << ")\n";
 }
 
 void Resistor::display_R_I()
 {
-    std::cout << "R(" << getNode1() << ", " << getNode2() << ", " << getResistance() << ")" << "\t I = " << getI() << "\n";
+    // Suggestion : Call displayResistor(); using Resolution Scope , then print I
+    cout << "R(" << getNode1() << ", " << getNode2() << ", " << getResistance() << ")" << "\t I = " << getI() << "\n";
+}
+
+Resistor::~Resistor()
+{
+    if (resistorCount > 0)
+    {
+        --resistorCount;
+    }
 }

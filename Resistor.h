@@ -4,21 +4,26 @@
 class Resistor : public Component 
 {
 private:
+
     double resistance;
     static int resistorCount;
 public:
+
+    // Constructor & Destructor
     Resistor(int n1, int n2, double r);
     ~Resistor();
-    double getResistance() const;
 
+    // Setters & Getters
     void setResistance(double r);
-
+    double getResistance() const;
+    static int getResistorCount();
+    string getType() const override;
+    
+    // Stamping (Specified in Component Class)
     void stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) override;
 
-    std::string getType() const override;
-
-    static int getResistorCount();
-    void displayResistor();
-    void display_R_I();
+    // Display Functions
+    void displayResistor(); // Displays Resistor Information
+    void display_R_I(); // Displays Resistor Info Along With Calculated Current
 
 };

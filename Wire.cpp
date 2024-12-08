@@ -5,12 +5,28 @@ int Wire::WireCount = 0;
 
 Wire::Wire(int n1, int n2, int v, int idx) : Component(n1, n2) 
 {
+    // WARNING : currentIndex is uninitialized
+    // currentIndex = idx;
     WireCount++;
 }
 
-Wire::~Wire() 
+void Wire::setCurrentIndex(int idx)
 {
-    WireCount--;
+    currentIndex = idx;
+}
+
+int Wire::getCurrentIndex() const
+{
+    return currentIndex;
+}
+
+int Wire::getWireCount()
+{
+    return WireCount;
+}
+
+string Wire::getType() const {
+    return "Wire";
 }
 
 void Wire::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) {
@@ -49,34 +65,17 @@ void Wire::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) {
     I(idx - 1) = 0;
 }
 
-
-std::string Wire::getType() const {
-    return "Wire";
-}
-
-
-
-int Wire::getWireCount()
-{
-    return WireCount;
-}
-
-int Wire::getCurrentIndex() const
-{
-    return currentIndex;
-}
-
-void Wire::setCurrentIndex(int idx)
-{
-    currentIndex = idx;
-}
-
 void Wire::displayWire()
 {
-    std::cout << "W(" << getNode1() << ", " << getNode2() << ")\n";
+    cout << "W(" << getNode1() << ", " << getNode2() << ")\n";
 }
 
 void Wire::display_W_I()
 {
-    std::cout << "W(" << getNode1() << ", " << getNode2() << ")" << "\t I = " << getI() << "\n";
+    cout << "W(" << getNode1() << ", " << getNode2() << ")" << "\t I = " << getI() << "\n";
+}
+
+Wire::~Wire()
+{
+    WireCount--;
 }

@@ -17,6 +17,7 @@ class simulateGUIInput
 {
 
 private:
+
     Solver solver;
 
 public:
@@ -31,13 +32,13 @@ public:
     }
 
     // Function to dynamically center text with optional border
-    void printCenteredDynamic(const std::string& text, int consoleWidth, char borderChar = ' ') {
+    void printCenteredDynamic(const string& text, int consoleWidth, char borderChar = ' ') {
         int padding = max((consoleWidth - static_cast<int>(text.size())) / 2, 0);
-        std::cout << std::string(padding, borderChar) << text << std::string(padding, borderChar) << "\n";
+        cout << std::string(padding, borderChar) << text << string(padding, borderChar) << "\n";
     }
 
     void Simulate() {
-        std::string input;
+        string input;
 
         // Reset console background to black
         system("color 07"); // 0 = Black Background, 7 = White Text
@@ -49,51 +50,51 @@ public:
 
         // Title display
         setColor(14, 0); // Yellow text on black background
-        std::cout << "\n\n";
-        printCenteredDynamic("\u2554" + std::string(40, '\u2550') + "\u2557", consoleWidth);
+        cout << "\n\n";
+        printCenteredDynamic("\u2554" + string(40, '\u2550') + "\u2557", consoleWidth);
         printCenteredDynamic(" \u2551            CIRCUIT SIMULATOR           \u2551", consoleWidth);
-        printCenteredDynamic("\u255A" + std::string(40, '\u2550') + "\u255D", consoleWidth);
-        std::cout << "\n\n";
+        printCenteredDynamic("\u255A" + string(40, '\u2550') + "\u255D", consoleWidth);
+        cout << "\n\n";
 
         while (true) {
             setColor(7, 0); // White text on black background
-            std::cout << "Enter component type (";
+            cout << "Enter component type (";
 
             setColor(12, 0); // Red for Resistor
-            std::cout << "R = Resistor";
+            cout << "R = Resistor";
 
             setColor(7, 0); // White
-            std::cout << " || ";
+            cout << " || ";
 
             setColor(9, 0); // Blue for Voltage Source
-            std::cout << "V = Voltage Source";
+            cout << "V = Voltage Source";
 
             setColor(7, 0);
-            std::cout << " || ";
+            cout << " || ";
 
             setColor(10, 0); // Green for Current Source
-            std::cout << "I = Current Source";
+            cout << "I = Current Source";
 
             //setColor(7, 0);
-            std::cout << " || ";
+            cout << " || ";
 
             setColor(14, 0); // Yellow for Wire
-            std::cout << "W = Wire";
+            cout << "W = Wire";
 
             setColor(7, 0);
-            std::cout << " || ";
+            cout << " || ";
 
             setColor(13, 0); // Magenta for Quit
-            std::cout << "Q = Quit and solve";
+            cout << "Q = Quit and solve";
 
             setColor(7, 0);
-            std::cout << "): ";
+            cout << "): ";
 
-            std::cin >> input;
+            cin >> input;
 
             if (input == "Q" || input == "q") {
                 setColor(13, 0); // Magenta for Quit
-                std::cout << "Exiting simulation.\n\n";
+                cout << "Exiting simulation.\n\n";
                 break;
             }
 
@@ -102,74 +103,74 @@ public:
                 double resistance;
 
                 setColor(7, 0);
-                std::cout << "node1 = ";
-                std::cin >> node1;
-                std::cout << "node2 = ";
-                std::cin >> node2;
-                std::cout << "Resistance (In Ohm) = ";
-                std::cin >> resistance;
+                cout << "node1 = ";
+                cin >> node1;
+                cout << "node2 = ";
+                cin >> node2;
+                cout << "Resistance (In Ohm) = ";
+                cin >> resistance;
 
                 Resistor* resistor = new Resistor(node1, node2, resistance);
                 solver.addComponent(resistor);
 
                 setColor(12, 0); // Red for Resistor
-                std::cout << "R (" << node1 << ", " << node2 << ", " << resistance << ")\n";
+                cout << "R (" << node1 << ", " << node2 << ", " << resistance << ")\n";
             }
             else if (input == "V" || input == "v") {
                 int node1, node2;
                 double voltage;
 
                 setColor(7, 0);
-                std::cout << "Node1 (From) = ";
-                std::cin >> node1;
-                std::cout << "Node2 (To) = ";
-                std::cin >> node2;
-                std::cout << "Voltage (In Volt) = ";
-                std::cin >> voltage;
+                cout << "Node1 (From) = ";
+                cin >> node1;
+                cout << "Node2 (To) = ";
+                cin >> node2;
+                cout << "Voltage (In Volt) = ";
+                cin >> voltage;
 
                 VoltageSource* voltageSource = new VoltageSource(node1, node2, voltage);
                 solver.addComponent(voltageSource);
 
                 setColor(9, 0); // Blue for Voltage Source
-                std::cout << "V (" << node1 << ", " << node2 << ", " << voltage << ")\n";
+                cout << "V (" << node1 << ", " << node2 << ", " << voltage << ")\n";
             }
             else if (input == "I" || input == "i") {
                 int node1, node2;
                 double current;
 
                 setColor(7, 0);
-                std::cout << "Node1 (From) = ";
-                std::cin >> node1;
-                std::cout << "Node2 (To) = ";
-                std::cin >> node2;
-                std::cout << "Current (In Ampere) = ";
-                std::cin >> current;
+                cout << "Node1 (From) = ";
+                cin >> node1;
+                cout << "Node2 (To) = ";
+                cin >> node2;
+                cout << "Current (In Ampere) = ";
+                cin >> current;
 
                 CurrentSource* currentSource = new CurrentSource(node1, node2, current);
                 solver.addComponent(currentSource);
 
                 setColor(10, 0); // Green for Current Source
-                std::cout << "I (" << node1 << ", " << node2 << ", " << current << ")\n";
+                cout << "I (" << node1 << ", " << node2 << ", " << current << ")\n";
             }
             else if (input == "W" || input == "w") {
                 int node1, node2;
 
                 setColor(7, 0);
-                std::cout << "Node1 = ";
-                std::cin >> node1;
-                std::cout << "Node2 = ";
-                std::cin >> node2;
+                cout << "Node1 = ";
+                cin >> node1;
+                cout << "Node2 = ";
+                cin >> node2;
 
                 Wire* wire = new Wire(node1, node2);
                 solver.addComponent(wire);
 
                 setColor(14, 0);
-                std::cout << "W (" << node1 << ", " << node2 << ")\n";
+                cout << "W (" << node1 << ", " << node2 << ")\n";
             }
             else 
             {
                 setColor(4, 0); // Red for invalid input
-                std::cout << "Invalid input. Please try again.\n";
+                cout << "Invalid input. Please try again.\n";
             }
         }
         setColor(7, 0);

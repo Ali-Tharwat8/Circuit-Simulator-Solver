@@ -13,19 +13,29 @@ Component::Component(int n1, int n2)
     }
 }
 
-Component::~Component() 
+void Component::setI(double i)
 {
-    --componentCount;
+    if (abs(i) > .00001)
+        I = i;
+    else
+        I = 0;
+}
+
+double Component::getI()
+{
+    return I;
 }
 
 int Component::getNode1() const 
 {
     return node1;
 }
+
 int Component::getNode2() const 
 {
     return node2;
 }
+
 int Component::getComponentCount() 
 {
     return componentCount;
@@ -35,14 +45,7 @@ bool Component::validateNodes(int n1, int n2) {
     return n1 >= 0 && n2 >= 0 && n1 != n2;
 }
 
-void Component::setI(double i)
+Component::~Component()
 {
-    if (abs(i) > .00001)
-        I = i;
+    --componentCount;
 }
-
-double Component::getI()
-{
-    return I;
-}
-

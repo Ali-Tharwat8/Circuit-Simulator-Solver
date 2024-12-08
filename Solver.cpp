@@ -6,6 +6,43 @@ Solver::Solver() : numNodes(0), V(Eigen::VectorXd())
     I.setZero();
 }
 
+Eigen::MatrixXd Solver::getG()
+{
+    return G;
+}
+
+Eigen::MatrixXd Solver::getI()
+{
+    return I;
+}
+
+int Solver::getMatrixSize()
+{
+    return numNodes + Voltages.size() + Wires.size();
+}
+
+double Solver::getVoltage(int node) const
+{
+
+    if (isValidIndex(node) && V.size() != 0)
+        return V(node - 1);
+}
+
+int Solver::getNumNodes() const
+{
+    return numNodes;
+}
+
+bool Solver::isValidIndex(int index) const
+{
+    return index >= 0 && index <= numNodes;
+}
+
+bool Solver::isValidSystem() const
+{
+    return (G.rows() == G.cols()) && (G.rows() == I.size()) && (numNodes > 0);
+}
+
 void Solver::updateNodeCount(Component* component)
 {
     if (component)
@@ -17,11 +54,6 @@ void Solver::updateNodeCount(Component* component)
         /*if (component->getNode1() == 0 || component->getNode2() == 0)
             Ground = true;*/
     }
-}
-
-bool Solver::isValidSystem() const 
-{
-    return (G.rows() == G.cols()) && (G.rows() == I.size()) && (numNodes > 0);
 }
 
 void Solver::addComponent(Component* component) 
@@ -68,6 +100,65 @@ void Solver::addComponent(Component* component)
     }
 }
 
+void Solver::getCurrent()
+{
+    double I;
+    int j = 0;
+    cout << "\n";
+    for (int i = 0; i < resistors.size(); i++)
+    {
+        if (resistors.at(i)->getNode1() != 0 && resistors.at(i)->getNode2() != 0)
+        {
+            I = (getVoltage(resistors.at(i)->getNode1()) - getVoltage(resistors.at(i)->getNode2())) / resistors.at(i)->getResistance();
+            resistors.at(i)->setI(I);
+        }
+        else
+        {
+            if (resistors.at(i)->getNode1() == 0)
+            {
+                I = -getVoltage(resistors.at(i)->getNode2()) / resistors.at(i)->getResistance();
+                resistors.at(i)->setI(I);
+            }
+            else
+            {
+                I = getVoltage(resistors.at(i)->getNode1()) / resistors.at(i)->getResistance();
+                resistors.at(i)->setI(I);
+            }
+
+        }
+    }
+    cout << "\n";
+
+    for (int i = 0; i < Voltages.size(); i++)
+    {
+        Voltages.at(i)->setI(-(V(numNodes + i)));
+    }
+    cout << "\n";
+
+    for (int i = 0; i < Wires.size(); i++)
+    {
+        Wires.at(i)->setI(-(V(numNodes + Voltages.size() + i)));
+    }
+}
+
+void Solver::stamp()
+{
+    for (int i = 0; i < Voltages.size(); i++)
+    {
+        Voltages.at(i)->setCurrentIndex(numNodes + 1 + i);
+    }
+
+    for (int i = 0; i < Wires.size(); i++)
+    {
+        Wires.at(i)->setCurrentIndex(numNodes + Voltages.size() + 1 + i);
+    }
+
+    for (int i = 0; i < components.size(); i++)
+    {
+        components[i]->stamp(G, I);
+        printSystem();
+    }
+}
 
 void Solver::solve()
 {
@@ -85,6 +176,14 @@ void Solver::solve()
         std::cout << "\n Not valid system";
 }
 
+void Solver::zeroV()
+{
+    for (int i = 0; i < getMatrixSize(); i++)
+    {
+        if (abs(V(i)) < .00001)
+            V(i) = 0;
+    }
+}
 
 void Solver::printSystem() const
 {
@@ -116,113 +215,5 @@ void Solver::printV()
     for (int i = 0; i < Wires.size(); i++)
     {
         Wires.at(i)->display_W_I();
-    }
-}
-
-
-
-Eigen::MatrixXd Solver::getG()
-{
-    return G;
-}
-
-Eigen::MatrixXd Solver::getI()
-{
-    return I;
-}
-
-void Solver::stamp()
-{
-    for (int i = 0; i < Voltages.size(); i++)
-    {
-        Voltages.at(i)->setCurrentIndex(numNodes + 1 + i);
-    }
-
-    for (int i = 0; i < Wires.size(); i++)
-    {
-        Wires.at(i)->setCurrentIndex(numNodes + Voltages.size() + 1 + i);
-    }
-
-    for (int i = 0; i < components.size(); i++)
-    {
-        components[i]->stamp(G, I);
-        printSystem();
-    }
-}
-
-
-
-
-double Solver::getVoltage(int node) const 
-{
-
-    if(isValidIndex(node) && V.size() != 0)
-        return V(node - 1);
-}
-
-
-
-bool Solver::isValidIndex(int index) const 
-{
-    return index >= 0 && index <= numNodes;
-}
-
-int Solver::getNumNodes() const 
-{
-    return numNodes;
-}
-
-void Solver::zeroV()
-{
-    for (int i = 0; i < getMatrixSize(); i++)
-    {
-        if (abs(V(i)) < .00001)
-            V(i) = 0;
-    }
-}
-
-int Solver::getMatrixSize()
-{
-    return numNodes + Voltages.size() + Wires.size();
-}
-
-void Solver::getCurrent()
-{
-    double I;
-    int j = 0;
-    std::cout << "\n";
-    for (int i = 0; i < resistors.size(); i++)
-    {   
-        if(resistors.at(i)->getNode1() != 0 && resistors.at(i)->getNode2() != 0)
-        {
-            I = (getVoltage(resistors.at(i)->getNode1()) - getVoltage(resistors.at(i)->getNode2())) / resistors.at(i)->getResistance();
-            resistors.at(i)->setI(I);
-        }
-        else
-        {
-            if (resistors.at(i)->getNode1() == 0)
-            {
-                I = -getVoltage(resistors.at(i)->getNode2()) / resistors.at(i)->getResistance();
-                resistors.at(i)->setI(I);
-            }
-            else
-            {
-                I = getVoltage(resistors.at(i)->getNode1()) / resistors.at(i)->getResistance();
-                resistors.at(i)->setI(I);
-            }
-
-        }
-    }
-    std::cout << "\n";
-
-    for (int i = 0; i < Voltages.size(); i++)
-    {
-        Voltages.at(i)->setI(-(V(numNodes + i)));
-    }
-    std::cout << "\n";
-
-    for (int i = 0; i < Wires.size(); i++)
-    {
-        Wires.at(i)->setI(-(V(numNodes + Voltages.size() + i)));
     }
 }

@@ -9,11 +9,9 @@ VoltageSource::VoltageSource(int n1, int n2, double v, int idx) : Component(n1, 
     ++voltageSourceCount;
 }
 
-VoltageSource::~VoltageSource() 
+void VoltageSource::setVoltage(double v)
 {
-    {
-        --voltageSourceCount;
-    }
+    voltage = v;
 }
 
 double VoltageSource::getVoltage() const 
@@ -21,17 +19,12 @@ double VoltageSource::getVoltage() const
     return voltage;
 }
 
-int VoltageSource::getCurrentIndex() const 
+int VoltageSource::getVoltageSourceCount()
 {
-    return currentIndex;
+    return voltageSourceCount;
 }
 
-void VoltageSource::setVoltage(double v) 
-{
-    voltage = v;
-}
-
-void VoltageSource::setCurrentIndex(int idx) 
+void VoltageSource::setCurrentIndex(int idx)
 {
     if (idx > 0)
         currentIndex = idx;
@@ -39,9 +32,14 @@ void VoltageSource::setCurrentIndex(int idx)
         idx = -1;
 }
 
-int VoltageSource::getVoltageSourceCount() 
+int VoltageSource::getCurrentIndex() const 
 {
-    return voltageSourceCount;
+    return currentIndex;
+}
+
+string VoltageSource::getType() const
+{
+    return "VoltageSource";
 }
 
 void VoltageSource::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) {
@@ -80,18 +78,20 @@ void VoltageSource::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) {
     I(idx - 1) = voltage;
 }
 
-std::string VoltageSource::getType() const 
-{
-    return "VoltageSource";
-}
-
 void VoltageSource::displayVoltageSource()
 {
-    std::cout << "V(" << getNode1() << ", " << getNode2() << ", " << getVoltage() << ")\n";
+    cout << "V(" << getNode1() << ", " << getNode2() << ", " << getVoltage() << ")\n";
 }
 
 void VoltageSource::display_VC_I()
 {
-    std::cout << "V(" << getNode1() << ", " << getNode2() << ", " << getVoltage() << ")" << "\t I = " << getI() << "\n";
+    // Same Suggestion as in Resistor Display Function :)
+    cout << "V(" << getNode1() << ", " << getNode2() << ", " << getVoltage() << ")" << "\t I = " << getI() << "\n";
 }
 
+VoltageSource::~VoltageSource()
+{
+    {
+        --voltageSourceCount;
+    }
+}

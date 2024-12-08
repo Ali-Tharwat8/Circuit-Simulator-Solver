@@ -7,15 +7,24 @@ CurrentSource::CurrentSource(int n1, int n2, double i) : Component(n1, n2), curr
     currentsourcecount++;
 }
 
+void CurrentSource::setCurrent(double i)
+{
+    current = i;
+}
+
 double CurrentSource::getCurrent() const 
 {
     return current;
 }
 
-
-void CurrentSource::setCurrent(double i) 
+int CurrentSource::getcurrentcount()
 {
-    current = i;
+    return currentsourcecount;
+}
+
+string CurrentSource::getType() const
+{
+    return "CurrentSource";
 }
 
 void CurrentSource::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) {
@@ -44,22 +53,13 @@ void CurrentSource::stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) {
     }
 }
 
-int CurrentSource::getcurrentcount()
+void CurrentSource::displayCurrentSource()
 {
-    return currentsourcecount;
+    // Same suggestion as before :)
+    cout << "I(" << getNode1() << ", " << getNode2() << ", " << getCurrent() << ")\n";
 }
 
 CurrentSource::~CurrentSource()
 {
     currentsourcecount++;
-}
-
-void CurrentSource::displayCurrentSource()
-{
-    std::cout << "I(" << getNode1() << ", " << getNode2() << ", " << getCurrent() << ")\n";
-}
-
-std::string CurrentSource::getType() const
-{
-    return "CurrentSource";
 }

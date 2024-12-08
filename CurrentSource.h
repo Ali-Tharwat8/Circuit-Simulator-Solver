@@ -8,13 +8,17 @@ class CurrentSource : public Component
     static int currentsourcecount;
 
 public:
+
     CurrentSource(int n1, int n2, double i);
-    double getCurrent() const;
-    void setCurrent(double i);
-    std::string getType() const;
-    void stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) override;
-    static int getcurrentcount();
     ~CurrentSource();
+
+    void setCurrent(double i);
+    double getCurrent() const;
+    static int getcurrentcount();
+    string getType() const;
+
+    void stamp(Eigen::MatrixXd& G, Eigen::VectorXd& I) override;
+
     void displayCurrentSource();
     
 };
